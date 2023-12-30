@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Control Panel</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container my-4">
+        <h1 class="text-center mb-4">Smart Home Control Panel</h1>
+
+        <div class="row">
+            <!-- Lighting Control -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Lighting Control</h5>
+                        <button class="btn btn-primary" onclick="toggleLight()">Toggle Light</button>
+                        <!-- Add more controls as needed -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thermostat Control -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Thermostat Control</h5>
+                        <input type="number" id="temperature" class="form-control my-2" name="temperature" min="15" max="30" placeholder="Temperature (°C)">
+                        <button class="btn btn-primary" onclick="setTemperature()">Set Temperature</button>
+                        <!-- Add more controls as needed -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Control -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Security Control</h5>
+                        <button class="btn btn-primary" onclick="activateSecuritySystem()">Activate System</button>
+                        <!-- Add more controls as needed -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
