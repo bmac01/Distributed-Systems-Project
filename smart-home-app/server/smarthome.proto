@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package smarthomecontrol;
+
+// Service definitions
+service LightService {
+  rpc ToggleLight (ToggleRequest) returns (ToggleResponse);
+  rpc GetStatus (Empty) returns (LightStatus);
+}
+
+// Message definitions
+message Empty {}
+
+message Light {
+  int32 light_id = 1;
+  float brightness = 2;
+  bool power_status = 3;
+}
+
+message LightStatus {
+  repeated Light lights = 1;
+}
+
+message ToggleRequest {
+  bool status = 1;
+}
+
+message ToggleResponse {
+  bool result = 1;
+  string message = 2;
+}
