@@ -8,6 +8,8 @@ var smarthomecontrolPackage = grpcObject.smarthomecontrol;
 var server = new grpc.Server();
 let lightStatus = false; // needs to be updated so that it is random?? 
 
+//Light Service 
+//<<----->> light toggle 
 server.addService(smarthomecontrolPackage.LightService.service, {
     ToggleLight: (call, callback) => {
         lightStatus = call.request.status;
@@ -17,6 +19,10 @@ server.addService(smarthomecontrolPackage.LightService.service, {
         });
     }
 });
+// <<----->> light toggle
+
+// Addtional Services to be added
+
 
 server.bindAsync('0.0.0.0:4000', grpc.ServerCredentials.createInsecure(), (error, port) => {
     if (error) {

@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package smarthomecontrol;
 
+// Light Service    
 // Service definitions
 service LightService {
   rpc ToggleLight (ToggleRequest) returns (ToggleResponse);
@@ -29,3 +30,5 @@ message ToggleResponse {
   bool result = 1;
   string message = 2;
 }
+
+//add additional Services

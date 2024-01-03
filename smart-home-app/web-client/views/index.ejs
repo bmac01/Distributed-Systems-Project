@@ -1,11 +1,77 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Control Panel</title>
+    <!-- Implement Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
+	<!-- link to CSS local file - generic styling used  -->
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<!-- Bootstrap utilised for layout - container- header - Image - app description - Bootstrap card layout for each service  -->
+<body>
+    <div class="container my-5">
+        <div class="text-center mb-5">
+            <h1>Smart Home Control Panel</h1>
+            <img src="/images/image1.jpeg" alt="Home Image" class="img-fluid rounded mb-4" style="max-width: 400px;">
+            <p class="lead">Manage your home's lighting, temperature, and security system</p>
+        </div>
+
+        <div class="row g-4">
+		
+		
+            <!-- Lighting Control - to be updated further if needed  -->
+
+	<div class="col-md-4">
+		<div class="card shadow h-100">
+			<div class="card-header bg-primary text-white">Lighting Control</div>
+				<div class="card-body">
+				<button id="lightToggle" class="btn btn-lg w-100" onclick="toggleLight()">Turn On/Off</button>
+				<p id="LightStatus" class="text-primary mt-2">Lights: Off</p>
+				
+				<label for="brightnessSlider" class="form-label">Adjust Brightness</label>
+				<input type="range" class="form-range" id="brightnessSlider" min="0" max="100" onchange="adjustBrightness(this.value)">
+				<p id="brightnessLevel" class="text-primary mt-2">Brightness: 50%</p>
+			</div>
+		</div>
+	</div>
+
+            <!-- Thermostat Control - to be updated further if needed  -->
+	<div class="col-md-4">
+		<div class="card shadow h-100">
+			<div class="card-header bg-success text-white">Thermostat Control</div>
+			<div class="card-body">
+				<h5 class="current-temperature mb-3">Current Temperature: <span id="currentTemp">--</span>°C</h5>
+				<input type="number" id="temperature" class="form-control mb-2" name="temperature" min="15" max="30" placeholder="--°C">
+				<button class="btn btn-success w-100" onclick="setTemperature()">Set Temperature</button>
+			</div>
+		</div>
+	</div>
+
+           <!-- Security Control -- to be updated further if needed -->
+	<div class="col-md-4">
+		<div class="card shadow h-100">
+			<div class="card-header bg-danger text-white">Security Control</div>
+			<div class="card-body">
+				<button id="securityToggle" class="btn btn-lg w-100 mb-3" onclick="toggleSecuritySystem()">Activate</button>
+				<p id="securityStatus" class="text-danger fw-bold">Status: Deactivated</p>
+				
+				<h6>Recent Activity</h6>
+				<ul id="recentActivity" class="list-unstyled">
+					<!-- Recent activities will be listed here -->
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	
+		</div>
+    </div>
+
+    <!-- Implement Bootstrap Bundle with Popper -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+	<!-- link to javascript for the button onclicks -->
+    <script src="/javascripts/script.js"></script>
+</body>
 </html>
