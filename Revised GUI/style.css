@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #eef2f7;
+    color: #333333;
+    text-align: center;
+}
+
+h1 {
+    color: #000000 ;
+}
+
+
+.card-header {
+    border-radius: 10px 10px 0 0;  /* Rounded corners at the top */
+    font-size: 1.25em;  /* Larger font size for headers */
+    letter-spacing: 0.5px;  /* Slight spacing between letters */
+}
+
+/* Card Body Styling */
+.card-body {
+    padding: 20px;  /* Increased padding for more space */
+}
+
+/* Text and Button Styling */
+.card-body h6 {
+    color: #495057;  /* Dark gray for titles */
+    margin-bottom: 15px;  /* Spacing below subheadings */
+    font-weight: 600;  /* Slightly bolder font */
+}
+
+.card-body p, .card-body li {
+    color: #6c757d;  /* Gray text for a softer look */
+    font-size: 0.9em;  /* Smaller font size for details */
+}
+
+.card-body .btn {
+    font-weight: bold;  /* Bold font for buttons */
+    letter-spacing: 0.5px;  /* Letter spacing for readability */
+    margin-bottom: 10px;  /* Spacing below buttons */
+}
+
+/* Additional Styling for Inputs and Toggles */
+.card-body .form-control, .card-body .form-check-input {
+    margin-bottom: 10px;  /* Space below form elements */
+}
+
+.card-body .form-check-label {
+    margin-left: 0.5em;  /* Spacing after toggle switches */
+    font-size: 0.9em;  /* Matching font size */
+}
+
+#recentActivity li {
+    margin-bottom: 5px;  /* Spacing between activity items */
+}
+
