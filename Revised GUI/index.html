@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Home Control Panel</title>
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/css/bootstrap-switch-button.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container my-5">
@@ -26,11 +27,29 @@
 			<div class="card-header bg-primary text-white">Lighting Control</div>
 				<div class="card-body">
 				<button id="lightToggle" class="btn btn-lg w-100" onclick="toggleLight()">Turn On/Off</button>
-				<p id="lightStatus" class="text-primary mt-2">Lights: Off</p>
+				<h6 id="lightStatus" >Lights: Off</h6>
 				
-				<label for="brightnessSlider" class="form-label">Adjust Brightness</label>
-				<input type="range" class="form-range" id="brightnessSlider" min="0" max="100" onchange="adjustBrightness(this.value)">
-				<p id="brightnessLevel" class="text-primary mt-2">Brightness: 50%</p>
+				<div class="row align-items-center">
+					<div class="col">
+						<input type="range" class="form-range" id="brightnessSlider" min="0" max="10" onchange="adjustBrightness(this.value)">
+					</div>
+					<div class="col-auto">
+						<label for="brightnessSlider" class="form-label">Adjust Brightness Zone 1</label>
+					</div>
+				</div>
+				<h6 id="brightnessLevel" >Brightness: 5</h6>
+				
+				<div class="row align-items-center">
+					<div class="col">
+						<input type="range" class="form-range" id="brightnessSlider" min="0" max="10" onchange="adjustBrightness(this.value)">
+					</div>
+					<div class="col-auto">
+						<label for="brightnessSlider" class="form-label">Adjust Brightness Zone 2</label>
+					</div>
+				</div>
+				<h6 id="brightnessLevel" >Brightness: 5</h6>	
+
+				
 			</div>
 		</div>
 	</div>
@@ -43,6 +62,7 @@
 				<h5 class="current-temperature mb-3">Current Temperature: <span id="currentTemp">--</span>°C</h5>
 				<input type="number" id="temperature" class="form-control mb-2" name="temperature" min="15" max="30" placeholder="--°C">
 				<button class="btn btn-success w-100" onclick="setTemperature()">Set Temperature</button>
+				<p id="temperature" class="text-danger fw-bold">Status: Temperature Set</p>
 			</div>
 		</div>
 	</div>
@@ -53,7 +73,16 @@
 			<div class="card-header bg-danger text-white">Security Control</div>
 			<div class="card-body">
 				<button id="securityToggle" class="btn btn-lg w-100 mb-3" onclick="toggleSecuritySystem()">Activate</button>
-				<p id="securityStatus" class="text-danger fw-bold">Status: Deactivated</p>
+						
+				<input type="checkbox" data-toggle="switchbutton" checked data-onstyle="primary" data-size="sm">
+				<label for="checkbox" class="form-check-label">Zone 1</label>
+				<input type="checkbox" data-toggle="switchbutton" checked data-onstyle="primary" data-size="sm">
+				<label for="checkbox" class="form-check-label">Zone 2</label>
+				<input type="checkbox" data-toggle="switchbutton" checked data-onstyle="primary" data-size="sm">
+				<label for="checkbox" class="form-check-label">Zone 3</label>
+				
+				<h6>Select Zones and Activate alarm</h6>
+				<p id="securityStatus" class="text-danger fw-bold">Current Status: Deactivated</p>
 				
 				<h6>Recent Activity</h6>
 				<ul id="recentActivity" class="list-unstyled">
@@ -68,7 +97,8 @@
     </div>
 
     <!-- Bootstrap Bundle with Popper -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/dist/bootstrap-switch-button.min.js"></script>
+	<script src="script.js"></script>
 </body>
 </html>

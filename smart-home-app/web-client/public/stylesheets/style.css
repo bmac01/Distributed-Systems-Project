@@ -25,10 +25,10 @@ h1 {
 
 /* Text and Button Styling */
 .card-body h6 {
-    color: #495057;  /* Dark gray for titles */
+    color: secondary mt-2
     margin-bottom: 15px;  /* Spacing below subheadings */
     font-weight: 600;  /* Slightly bolder font */
-}
+   }
 
 .card-body p, .card-body li {
     color: #6c757d;  /* Gray text for a softer look */
@@ -36,14 +36,14 @@ h1 {
 }
 
 .card-body .btn {
-    font-weight: bold;  /* Bold font for buttons */
     letter-spacing: 0.5px;  /* Letter spacing for readability */
     margin-bottom: 10px;  /* Spacing below buttons */
+    border-color: #e7e7e7;
 }
 
 /* Additional Styling for Inputs and Toggles */
 .card-body .form-control, .card-body .form-check-input {
-    margin-bottom: 10px;  /* Space below form elements */
+    margin-bottom: 10px;  
 }
 
 .card-body .form-check-label {

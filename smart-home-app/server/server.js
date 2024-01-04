@@ -8,8 +8,6 @@ var smarthomecontrolPackage = grpcObject.smarthomecontrol;
 var server = new grpc.Server();
 let lightStatus = false; // needs to be updated so that it is random?? 
 
-//Light Service 
-//<<----->> light toggle 
 server.addService(smarthomecontrolPackage.LightService.service, {
     ToggleLight: (call, callback) => {
         lightStatus = call.request.status;
@@ -19,10 +17,30 @@ server.addService(smarthomecontrolPackage.LightService.service, {
         });
     }
 });
-// <<----->> light toggle
 
-// Addtional Services to be added
+server.addService(smarthomecontrolPackage.AlertService.service, {
+    GetAlerts: (call) => {
+        const alerts = ["Intruder detected", "Window opened", "Motion detected", "Door unlocked"];
+        let count = 0;
+        const maxAlerts = 3; // Set the maximum number of alerts
 
+        const intervalId = setInterval(() => {
+            if (count >= maxAlerts) {
+                clearInterval(intervalId); // Stop the interval
+                call.end(); // End the call
+                return; // Exit the function to prevent further execution
+            }
+
+            const alertIndex = Math.floor(Math.random() * alerts.length);
+            call.write({
+                message: alerts[alertIndex],
+                timestamp: new Date().toISOString()
+            });
+
+            count++; // Increment the count
+        }, 500); // Sending a random alert every .5 second
+    }
+});
 
 server.bindAsync('0.0.0.0:4000', grpc.ServerCredentials.createInsecure(), (error, port) => {
     if (error) {

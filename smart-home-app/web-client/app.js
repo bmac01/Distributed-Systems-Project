@@ -1,41 +1,59 @@
-var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var grpc = require('@grpc/grpc-js');
+var protoLoader = require('@grpc/proto-loader');
 
 var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(express.static('public'));
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// Load the proto file
+var packageDef = protoLoader.loadSync('smarthome.proto', {});
+var grpcObject = grpc.loadPackageDefinition(packageDef);
+var smarthomecontrolPackage = grpcObject.smarthomecontrol;
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// Initialize gRPC client for LightService
+var lightClient = new smarthomecontrolPackage.LightService('localhost:4000', grpc.credentials.createInsecure());
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// Initialize gRPC client for AlertService
+var alertStatusClient = new smarthomecontrolPackage.AlertService('localhost:4000', grpc.credentials.createInsecure());
+
+// Route to render the home page
+app.get('/', (req, res) => {
+    res.render('index', { lightStatus: false });
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+// Route to toggle light
+app.get('/toggle', (req, res) => {
+    const lightStatus = req.query.status === 'true';
+    lightClient.ToggleLight({ status: lightStatus }, (error, response) => {
+        if (!error) {
+            res.json(response);
+        } else {
+            res.status(500).json({ message: "Error toggling light" });
+        }
+    });
 });
 
-module.exports = app;
+// Route to fetch alerts
+app.get('/alerts', (req, res) => {
+    var call = alertStatusClient.GetAlerts({});
+    let alerts = [];
+
+    call.on('data', (alert) => {
+        alerts.push(alert);
+    });
+
+    call.on('end', () => {
+        // Stream ended by the server
+        res.json(alerts); // Send the collected alerts to the client
+    });
+
+    call.on('error', (error) => {
+        console.error('Error on GetAlerts stream:', error);
+        if (!res.headersSent) {
+            res.status(500).json({ message: "Error fetching alerts" });
+        }
+    });
+});
+
+module.exports = app; // Export the app instance for use in www
