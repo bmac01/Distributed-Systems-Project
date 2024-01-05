@@ -6,7 +6,7 @@ var grpcObject = grpc.loadPackageDefinition(packageDef);
 var smarthomecontrolPackage = grpcObject.smarthomecontrol;
 
 var server = new grpc.Server();
-let lightStatus = false; // needs to be updated so that it is random?? 
+let lightStatus = false; // needs to be updated so that it is random ?? - leave as false for now
 
 server.addService(smarthomecontrolPackage.LightService.service, {
     ToggleLight: (call, callback) => {
@@ -16,6 +16,20 @@ server.addService(smarthomecontrolPackage.LightService.service, {
             message: `Light is now ${lightStatus ? 'ON' : 'OFF'}`
         });
     }
+});
+
+server.addService(smarthomecontrolPackage.SecurityService.service, {
+    ActivateZones: (call, callback) => {
+        call.on('data', (zoneActivationRequest) => {
+            console.log(`Zone ${zoneActivationRequest.zone_id} activation status: ${zoneActivationRequest.activate}`);
+            // Process zone activation...
+        });
+
+        call.on('end', () => {
+            callback(null, { message: "Zones activation updated" });
+        });
+    },
+    
 });
 
 server.addService(smarthomecontrolPackage.AlertService.service, {

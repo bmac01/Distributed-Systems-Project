@@ -5,6 +5,9 @@ var protoLoader = require('@grpc/proto-loader');
 var app = express();
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+app.use(express.json()); // for parsing application/json
+
+
 
 // Load the proto file
 var packageDef = protoLoader.loadSync('smarthome.proto', {});
@@ -16,6 +19,10 @@ var lightClient = new smarthomecontrolPackage.LightService('localhost:4000', grp
 
 // Initialize gRPC client for AlertService
 var alertStatusClient = new smarthomecontrolPackage.AlertService('localhost:4000', grpc.credentials.createInsecure());
+
+// Initialize gRPC client for SecurityService
+var securityClient = new smarthomecontrolPackage.SecurityService('localhost:4000', grpc.credentials.createInsecure());
+
 
 // Route to render the home page
 app.get('/', (req, res) => {
@@ -55,5 +62,24 @@ app.get('/alerts', (req, res) => {
         }
     });
 });
+
+// Route to activate zones
+app.post('/activate-zones', (req, res) => {
+    const { zones } = req.body; // zones should be an array of { zone_id, activate }
+    let call = securityClient.ActivateZones((error, response) => {
+        if (!error) {
+            res.json(response);
+        } else {
+            res.status(500).send('Error activating zones');
+        }
+    });
+
+    zones.forEach(zone => {
+        call.write(zone);
+    });
+
+    call.end();
+});
+
 
 module.exports = app; // Export the app instance for use in www

@@ -71,18 +71,20 @@
 		<div class="card shadow h-100">
 			<div class="card-header bg-danger text-white">Security Control</div>
 			<div class="card-body">
-				<button id="securityToggle" class="btn btn-lg w-100 mb-3" onclick="toggleSecuritySystem()">Activate</button>
-						
-				<input type="checkbox" data-toggle="switchbutton" checked data-onstyle="primary" data-size="sm">
-				<label for="checkbox" class="form-check-label">Zone 1</label>
-				<input type="checkbox" data-toggle="switchbutton" checked data-onstyle="primary" data-size="sm">
-				<label for="checkbox" class="form-check-label">Zone 2</label>
-				
-				
+				<button id="securityToggle" class="btn btn-lg w-100 mb-3" onclick="toggleSecuritySystem()">Activate/Deactivate</button>
+
+				<input type="checkbox" id="zone1" data-toggle="switchbutton" checked data-onstyle="primary" data-size="sm">
+				<label for="zone1" class="form-check-label">Zone 1</label>
+
+				<input type="checkbox" id="zone2" data-toggle="switchbutton" checked data-onstyle="primary" data-size="sm">
+				<label for="zone2" class="form-check-label">Zone 2</label>
+
+				<input type="checkbox" id="zone3" data-toggle="switchbutton" checked data-onstyle="primary" data-size="sm">
+				<label for="zone3" class="form-check-label">Zone 3</label>
+
 				<h6>Select Zones and Activate alarm</h6>
 				<p id="securityStatus" class="text-danger fw-bold">Current Status: Deactivated</p>
 				
-				<h6>Recent Activity</h6>
 				<ul id="recentActivity" class="list-unstyled">
 					<!-- Recent activities will be listed here -->
 				</ul>

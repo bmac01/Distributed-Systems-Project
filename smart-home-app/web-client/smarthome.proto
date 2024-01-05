@@ -39,3 +39,16 @@ message Alert {
   string message = 1;
   string timestamp = 2;
 }
+
+service SecurityService {
+  rpc ActivateZones (stream ZoneActivationRequest) returns (ActivationResponse);
+}
+
+message ZoneActivationRequest {
+  int32 zone_id = 1;
+  bool activate = 2;
+}
+
+message ActivationResponse {
+  string message = 1;
+}
