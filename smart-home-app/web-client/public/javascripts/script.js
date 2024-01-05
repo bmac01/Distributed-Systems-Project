@@ -55,5 +55,25 @@ async function toggleSecuritySystem() {
     }
 }
 
+//temperature 
+async function setTemperature() {
+    const temperature = document.getElementById('temperature').value;
+    try {
+        const response = await fetch('/set-temperature', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ temperature: parseFloat(temperature) }),
+        });
 
-
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        document.getElementById('temperatureStatus').innerText = data.message;
+    } catch (error) {
+        console.error('Error setting temperature:', error);
+        document.getElementById('temperatureStatus').innerText = `Error: ${error.message}`;
+    }
+}

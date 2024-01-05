@@ -27,14 +27,16 @@
 			<div class="card-header bg-primary text-white">Lighting Control</div>
 				<div class="card-body">
 				<button id="lightToggle" class="btn btn-lg w-100" onclick="toggleLight()">Turn On/Off</button>
-				<h6 id="LightStatus" >Lights: Off</h6>
+				<h6 id="LightStatus" >Lights: Off</h6><br>
 				
+				<h6>Adjust Brightness</h6>	
+
 				<div class="row align-items-center">
 					<div class="col">
 						<input type="range" class="form-range" id="brightnessSlider" min="0" max="10" onchange="adjustBrightness(this.value)">
 					</div>
 					<div class="col-auto">
-						<label for="brightnessSlider" class="form-label">Adjust Brightness Zone 1</label>
+						<label for="brightnessSlider" class="form-label">Zone 1</label>
 					</div>
 				</div>
 				<h6 id="brightnessLevel" >Brightness: 5</h6>
@@ -44,7 +46,7 @@
 						<input type="range" class="form-range" id="brightnessSlider" min="0" max="10" onchange="adjustBrightness(this.value)">
 					</div>
 					<div class="col-auto">
-						<label for="brightnessSlider" class="form-label">Adjust Brightness Zone 2</label>
+						<label for="brightnessSlider" class="form-label">Zone 2</label>
 					</div>
 				</div>
 				<h6 id="brightnessLevel" >Brightness: 5</h6>	

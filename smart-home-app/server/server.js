@@ -56,6 +56,16 @@ server.addService(smarthomecontrolPackage.AlertService.service, {
     }
 });
 
+server.addService(smarthomecontrolPackage.ThermostatService.service, {
+    SetTemperature: (call, callback) => {
+        const temperature = call.request.temperature;
+        // Logic to set the temperature...
+        callback(null, { message: `Temperature set to ${temperature}°C` });
+    },
+   
+});
+
+
 server.bindAsync('0.0.0.0:4000', grpc.ServerCredentials.createInsecure(), (error, port) => {
     if (error) {
         console.error(error);

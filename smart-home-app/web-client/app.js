@@ -7,22 +7,22 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.json()); // for parsing application/json
 
-
-
 // Load the proto file
 var packageDef = protoLoader.loadSync('smarthome.proto', {});
 var grpcObject = grpc.loadPackageDefinition(packageDef);
 var smarthomecontrolPackage = grpcObject.smarthomecontrol;
 
-// Initialize gRPC client for LightService
+// Initialize gRPC for LightService
 var lightClient = new smarthomecontrolPackage.LightService('localhost:4000', grpc.credentials.createInsecure());
 
-// Initialize gRPC client for AlertService
+// Initialize gRPC for AlertService
 var alertStatusClient = new smarthomecontrolPackage.AlertService('localhost:4000', grpc.credentials.createInsecure());
 
-// Initialize gRPC client for SecurityService
+// Initialize gRPC for SecurityService
 var securityClient = new smarthomecontrolPackage.SecurityService('localhost:4000', grpc.credentials.createInsecure());
 
+// Initialize gRPC for ThermostatService
+var client = new smarthomecontrolPackage.ThermostatService('localhost:4000', grpc.credentials.createInsecure());
 
 // Route to render the home page
 app.get('/', (req, res) => {
@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 
 // Route to toggle light
 app.get('/toggle', (req, res) => {
-    const lightStatus = req.query.status === 'true';
+    var lightStatus = req.query.status === 'true';
     lightClient.ToggleLight({ status: lightStatus }, (error, response) => {
         if (!error) {
             res.json(response);
@@ -94,6 +94,19 @@ app.post('/activate-zones', (req, res) => {
         message: "Zones updated",
         activeZones: activeZones.join(', '),
         inactiveZones: inactiveZones.join(', ')
+    });
+});
+
+
+app.post('/set-temperature', (req, res) => {
+    var { temperature } = req.body;
+    
+    client.SetTemperature({ temperature }, (error, response) => {
+        if (!error) {
+            res.json(response);
+        } else {
+            res.status(500).send('Error setting temperature');
+        }
     });
 });
 

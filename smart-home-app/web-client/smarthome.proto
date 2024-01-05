@@ -52,3 +52,17 @@ message ZoneActivationRequest {
 message ActivationResponse {
   string message = 1;
 }
+
+//Thermostat Service 
+
+service ThermostatService {
+  rpc SetTemperature (TemperatureRequest) returns (TemperatureResponse);
+}
+
+message TemperatureRequest {
+  float temperature = 1;
+}
+
+message TemperatureResponse {
+  string message = 1;
+}
