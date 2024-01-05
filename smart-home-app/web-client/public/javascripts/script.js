@@ -77,3 +77,41 @@ async function setTemperature() {
         document.getElementById('temperatureStatus').innerText = `Error: ${error.message}`;
     }
 }
+
+
+// Define adjustBrightness in the global scope
+async function adjustBrightness(zoneId, brightness) {
+    try {
+        var response = await fetch('/adjust-brightness', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ zone_id: zoneId, brightness: parseInt(brightness) }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        var data = await response.json();
+        document.getElementById(`brightnessLevel${zoneId}`).innerText = `Brightness: ${brightness}`;
+
+        // Update and show the status message
+        var statusElement = document.getElementById('brightnessStatus');
+        statusElement.innerText = data.message;
+        statusElement.style.display = 'block'; // Make it visible
+    } catch (error) {
+        var statusElement = document.getElementById('brightnessStatus');
+        statusElement.innerText = `Error: ${error.message}`;
+        statusElement.style.display = 'block'; // Make it visible
+    }
+}
+
+// Use DOMContentLoaded to set up event listeners
+document.addEventListener('DOMContentLoaded', (event) => {
+    var slider1 = document.getElementById('brightnessSlider1');
+    var slider2 = document.getElementById('brightnessSlider2');
+
+    slider1.addEventListener('change', () => adjustBrightness(1, slider1.value));
+    slider2.addEventListener('change', () => adjustBrightness(2, slider2.value));
+});

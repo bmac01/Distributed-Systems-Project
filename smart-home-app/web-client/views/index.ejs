@@ -29,28 +29,29 @@
 				<button id="lightToggle" class="btn btn-lg w-100" onclick="toggleLight()">Turn On/Off</button>
 				<h6 id="LightStatus" >Lights: Off</h6><br>
 				
-				<h6>Adjust Brightness</h6>	
+				<h6>Adjust Brightness</h6>
 
-				<div class="row align-items-center">
-					<div class="col">
-						<input type="range" class="form-range" id="brightnessSlider" min="0" max="10" onchange="adjustBrightness(this.value)">
-					</div>
-					<div class="col-auto">
-						<label for="brightnessSlider" class="form-label">Zone 1</label>
-					</div>
-				</div>
-				<h6 id="brightnessLevel" >Brightness: 5</h6>
-				
-				<div class="row align-items-center">
-					<div class="col">
-						<input type="range" class="form-range" id="brightnessSlider" min="0" max="10" onchange="adjustBrightness(this.value)">
-					</div>
-					<div class="col-auto">
-						<label for="brightnessSlider" class="form-label">Zone 2</label>
-					</div>
-				</div>
-				<h6 id="brightnessLevel" >Brightness: 5</h6>	
+	<div class="row align-items-center">
+    	<div class="col">
+        	<input type="range" class="form-range" id="brightnessSlider1" min="0" max="10" onchange="adjustBrightness(1, this.value)">
+    	</div>
+    <div class="col-auto">
+        <label for="brightnessSlider1" class="form-label">Zone 1</label>
+    </div>
+	</div>
+	<h6 id="brightnessLevel1">Brightness: 5</h6>
 
+	<div class="row align-items-center">
+    	<div class="col">
+        	<input type="range" class="form-range" id="brightnessSlider2" min="0" max="10" onchange="adjustBrightness(2, this.value)">
+    	</div>
+    <div class="col-auto">
+        <label for="brightnessSlider2" class="form-label">Zone 2</label>
+    </div>
+	</div>
+	<h6 id="brightnessLevel2">Brightness: 5</h6>
+
+	<p id="brightnessStatus" class="text-danger fw-bold" style="display: none;">Brightness</p>
 				
 			</div>
 		</div>

@@ -8,6 +8,11 @@ service LightService {
   rpc GetStatus (Empty) returns (LightStatus);
 }
 
+service BrightnessService {
+  rpc AdjustBrightness (stream BrightnessRequest) returns (BrightnessResponse);
+}
+
+
 // Message definitions
 message Empty {}
 
@@ -64,5 +69,14 @@ message TemperatureRequest {
 }
 
 message TemperatureResponse {
+  string message = 1;
+}
+
+message BrightnessRequest {
+  int32 zone_id = 1;
+  int32 brightness = 2;
+}
+
+message BrightnessResponse {
   string message = 1;
 }

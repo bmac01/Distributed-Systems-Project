@@ -22,7 +22,11 @@ var alertStatusClient = new smarthomecontrolPackage.AlertService('localhost:4000
 var securityClient = new smarthomecontrolPackage.SecurityService('localhost:4000', grpc.credentials.createInsecure());
 
 // Initialize gRPC for ThermostatService
-var client = new smarthomecontrolPackage.ThermostatService('localhost:4000', grpc.credentials.createInsecure());
+var thermostatClient = new smarthomecontrolPackage.ThermostatService('localhost:4000', grpc.credentials.createInsecure());
+
+// Initialize gRPC for BrightnessService
+var brightnessclient = new smarthomecontrolPackage.BrightnessService('localhost:4000', grpc.credentials.createInsecure());
+
 
 // Route to render the home page
 app.get('/', (req, res) => {
@@ -101,7 +105,7 @@ app.post('/activate-zones', (req, res) => {
 app.post('/set-temperature', (req, res) => {
     var { temperature } = req.body;
     
-    client.SetTemperature({ temperature }, (error, response) => {
+        thermostatClient.SetTemperature({ temperature }, (error, response) => {
         if (!error) {
             res.json(response);
         } else {
@@ -110,5 +114,20 @@ app.post('/set-temperature', (req, res) => {
     });
 });
 
+app.post('/adjust-brightness', (req, res) => {
+    const { zone_id, brightness } = req.body;
+    
+    
+    let call = brightnessclient.AdjustBrightness((error, response) => {
+        if (!error) {
+            res.json(response);
+        } else {
+            res.status(500).send('Error adjusting brightness');
+        }
+    });
+
+    call.write({ zone_id, brightness });
+    call.end();
+});
 
 module.exports = app; // Export the app instance for use in www

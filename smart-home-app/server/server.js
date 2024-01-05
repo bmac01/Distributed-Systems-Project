@@ -22,7 +22,7 @@ server.addService(smarthomecontrolPackage.SecurityService.service, {
     ActivateZones: (call, callback) => {
         call.on('data', (zoneActivationRequest) => {
             console.log(`Zone ${zoneActivationRequest.zone_id} activation status: ${zoneActivationRequest.activate}`);
-            // Process zone activation...
+            // Process zone activation
         });
 
         call.on('end', () => {
@@ -63,6 +63,20 @@ server.addService(smarthomecontrolPackage.ThermostatService.service, {
         callback(null, { message: `Temperature set to ${temperature}°C` });
     },
    
+});
+
+server.addService(smarthomecontrolPackage.BrightnessService.service, {
+    AdjustBrightness: (call, callback) => {
+        call.on('data', (request) => {
+            console.log(`Zone ${request.zone_id} brightness: ${request.brightness}`);
+            // Logic to adjust the brightness...
+        });
+
+        call.on('end', () => {
+            callback(null, { message: "Brightness adjusted" });
+        });
+    },
+    
 });
 
 
