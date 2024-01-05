@@ -48,7 +48,7 @@ async function toggleSecuritySystem() {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        document.getElementById('securityStatus').innerText = `Current Status: ${data.message}`;
+        document.getElementById('securityStatus').innerText = `Current Status: ${data.message}. Active Zones: ${data.activeZones}. Inactive Zones: ${data.inactiveZones}.`;
     } catch (error) {
         console.error('Error activating zones:', error);
         document.getElementById('securityStatus').innerText = `Error: ${error.message}`;

@@ -62,6 +62,9 @@
 				<h5 class="current-temperature mb-3">Current Temperature: <span id="currentTemp">--</span>°C</h5>
 				<input type="number" id="temperature" class="form-control mb-2" name="temperature" min="15" max="30" placeholder="--°C">
 				<button class="btn btn-success w-100" onclick="setTemperature()">Set Temperature</button>
+
+				<p id="temperatureStatus" class="text-danger fw-bold">Temperature set to</p>
+
 			</div>
 		</div>
 	</div>
@@ -85,6 +88,7 @@
 				<h6>Select Zones and Activate alarm</h6>
 				<p id="securityStatus" class="text-danger fw-bold">Current Status: Deactivated</p>
 				
+				<h6>Recent Activity</h6>
 				<ul id="recentActivity" class="list-unstyled">
 					<!-- Recent activities will be listed here -->
 				</ul>

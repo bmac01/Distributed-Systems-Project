@@ -64,21 +64,37 @@ app.get('/alerts', (req, res) => {
 });
 
 // Route to activate zones
+// Assume a default state for each zone
+let zonesState = {
+    1: false, // Zone 1
+    2: false, // Zone 2
+    3: false  // Zone 3
+};
+
 app.post('/activate-zones', (req, res) => {
-    const { zones } = req.body; // zones should be an array of { zone_id, activate }
-    let call = securityClient.ActivateZones((error, response) => {
-        if (!error) {
-            res.json(response);
-        } else {
-            res.status(500).send('Error activating zones');
-        }
-    });
+    const zones = req.body.zones;
 
     zones.forEach(zone => {
-        call.write(zone);
+        // Update the state of each zone
+        zonesState[zone.zone_id] = zone.activate;
     });
 
-    call.end();
+    // response indicating which zones are active and which are not
+    let activeZones = [];
+    let inactiveZones = [];
+    for (const [zoneId, isActive] of Object.entries(zonesState)) {
+        if (isActive) {
+            activeZones.push(zoneId);
+        } else {
+            inactiveZones.push(zoneId);
+        }
+    }
+
+    res.json({ 
+        message: "Zones updated",
+        activeZones: activeZones.join(', '),
+        inactiveZones: inactiveZones.join(', ')
+    });
 });
 
 
