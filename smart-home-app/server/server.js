@@ -1,13 +1,17 @@
+//import gRPC and proto loader modules
 var grpc = require('@grpc/grpc-js');
 var protoLoader = require('@grpc/proto-loader');
 
+//Load gRPC Service Definitions
 var packageDef = protoLoader.loadSync('smarthome.proto', {});
 var grpcObject = grpc.loadPackageDefinition(packageDef);
 var smarthomecontrolPackage = grpcObject.smarthomecontrol;
 
+//Create gRPC Server Instance and Initialize Light Status:
 var server = new grpc.Server();
-let lightStatus = false; // needs to be updated so that it is random ?? - leave as false for now
+let lightStatus = false; // needs to be updated so that it is random ?? - leave as false for now, update later
 
+//Add light service to gRPC Server:
 server.addService(smarthomecontrolPackage.LightService.service, {
     ToggleLight: (call, callback) => {
         lightStatus = call.request.status;
@@ -18,6 +22,7 @@ server.addService(smarthomecontrolPackage.LightService.service, {
     }
 });
 
+//Add Security Service to gRPC Server:
 server.addService(smarthomecontrolPackage.SecurityService.service, {
     ActivateZones: (call, callback) => {
         call.on('data', (zoneActivationRequest) => {
@@ -32,6 +37,7 @@ server.addService(smarthomecontrolPackage.SecurityService.service, {
     
 });
 
+//Add Alert Service to gRPC Server:
 server.addService(smarthomecontrolPackage.AlertService.service, {
     GetAlerts: (call) => {
         var alerts = ["Intruder detected", "Window opened", "Motion detected", "Door unlocked"];
@@ -56,6 +62,7 @@ server.addService(smarthomecontrolPackage.AlertService.service, {
     }
 });
 
+//Add Thermostat Service to gRPC Server
 server.addService(smarthomecontrolPackage.ThermostatService.service, {
     SetTemperature: (call, callback) => {
         var temperature = call.request.temperature;
@@ -65,6 +72,7 @@ server.addService(smarthomecontrolPackage.ThermostatService.service, {
    
 });
 
+//Add Brightness Service to gRPC Server:
 server.addService(smarthomecontrolPackage.BrightnessService.service, {
     AdjustBrightness: (call, callback) => {
         call.on('data', (request) => {
@@ -84,14 +92,30 @@ function getRandomTemperature() {
     return Math.random() * (25-18) + 18; // Random temperature between 18°C and 25°C
   }
   
-  // Add the TemperatureService implementation
-  server.addService(smarthomecontrolPackage.TemperatureService.service, {
+//Add Temperature Service to gRPC Server:
+server.addService(smarthomecontrolPackage.TemperatureService.service, {
     GetCurrentTemperature: (_, callback) => {
       callback(null, { temperature: getRandomTemperature() });
 }});
 
+//Add System Status Service to gRPC Server:
+server.addService(smarthomecontrolPackage.SystemStatusService.service, {
+    CheckStatus: (call) => {
+      call.on('data', (request) => {
+        console.log(`Received check command: ${request.checkCommand}`);
+        // Implement your logic to check system status
+        // For example, respond with a status message
+        let statusMessage = `Status checked for command: ${request.checkCommand}`;
+        call.write({ statusMessage: statusMessage });
+      });
+  
+      call.on('end', () => {
+        call.end();
+      });
+    }
+  });
 
-
+//Start the gRPC Server
 server.bindAsync('0.0.0.0:4000', grpc.ServerCredentials.createInsecure(), (error, port) => {
     if (error) {
         console.error(error);

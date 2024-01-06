@@ -1,5 +1,7 @@
+//keep track o light status
 let lightIsOn = false;
 
+//Function to toggle light status 
 async function toggleLight() {
     const response = await fetch(`/toggle?status=${!lightIsOn}`);
     const data = await response.json();
@@ -7,6 +9,7 @@ async function toggleLight() {
     document.getElementById('LightStatus').innerText = data.message;
 }
 
+// Function to fetch and display alerts
 async function fetchAlerts() {
     try {
         const response = await fetch('/alerts');
@@ -26,9 +29,13 @@ async function fetchAlerts() {
     }
 }
 
-setInterval(fetchAlerts, 3000); // Poll every 3 seconds
+// alerts every 3 seconds
+setInterval(fetchAlerts, 3000); 
 
+
+// Function to toggle security system state
 async function toggleSecuritySystem() {
+    // Gather state of each zone from the Web GUI
     const zones = [
         { zone_id: 1, activate: document.getElementById('zone1').checked },
         { zone_id: 2, activate: document.getElementById('zone2').checked },
@@ -55,7 +62,7 @@ async function toggleSecuritySystem() {
     }
 }
 
-//temperature 
+// Function to set the temperature
 async function setTemperature() {
     var temperature = document.getElementById('temperature').value;
     try {
@@ -78,7 +85,7 @@ async function setTemperature() {
     }
 }
 
-// Define adjustBrightness in the global scope
+// Function to adjust brightness
 async function adjustBrightness(zoneId, brightness) {
     try {
         var response = await fetch('/adjust-brightness', {
@@ -106,11 +113,12 @@ async function adjustBrightness(zoneId, brightness) {
     }
 }
 
-// Use DOMContentLoaded to set up event listeners
+//  Event listener setup for DOMContentLoaded event for the brightness sliders
 document.addEventListener('DOMContentLoaded', (event) => {
     var slider1 = document.getElementById('brightnessSlider1');
     var slider2 = document.getElementById('brightnessSlider2');
 
+ // Add change event listeners to brightness sliders   
     slider1.addEventListener('change', () => adjustBrightness(1, slider1.value));
     slider2.addEventListener('change', () => adjustBrightness(2, slider2.value));
 });
@@ -119,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set up other event listeners...
 });
 
+// Function to fetch current temperature
 async function fetchCurrentTemperature() {
     try {
       const response = await fetch('/current-temperature');

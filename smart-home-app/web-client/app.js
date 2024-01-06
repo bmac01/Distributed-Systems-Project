@@ -1,13 +1,15 @@
+// Importing required modules
 var express = require('express');
 var grpc = require('@grpc/grpc-js');
 var protoLoader = require('@grpc/proto-loader');
 
+// Initializing Express app
 var app = express();
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.json()); // for parsing application/json
 
-// Load the proto file
+// Load the gPRC package
 var packageDef = protoLoader.loadSync('smarthome.proto', {});
 var grpcObject = grpc.loadPackageDefinition(packageDef);
 var smarthomecontrolPackage = grpcObject.smarthomecontrol;
@@ -30,13 +32,15 @@ var brightnessclient = new smarthomecontrolPackage.BrightnessService('localhost:
 // Initialize gRPC for TemperatureService
 var temperatureClient = new smarthomecontrolPackage.TemperatureService('localhost:4000', grpc.credentials.createInsecure());
 
+//Initialize gRPC for SystemStatus
+var client = new smarthomecontrolPackage.SystemStatusService('localhost:4000', grpc.credentials.createInsecure());
 
 // Route to render the home page
 app.get('/', (req, res) => {
     res.render('index', { lightStatus: false });
 });
 
-// Route to toggle light
+// Route to toggle light status
 app.get('/toggle', (req, res) => {
     var lightStatus = req.query.status === 'true';
     lightClient.ToggleLight({ status: lightStatus }, (error, response) => {
@@ -48,7 +52,7 @@ app.get('/toggle', (req, res) => {
     });
 });
 
-// Route to fetch alerts
+// Route to fetch security alerts
 app.get('/alerts', (req, res) => {
     var call = alertStatusClient.GetAlerts({});
     let alerts = [];
@@ -70,7 +74,7 @@ app.get('/alerts', (req, res) => {
     });
 });
 
-// Route to activate zones
+// Route to activate security zones
 // Assume a default state for each zone
 let zonesState = {
     1: false, // Zone 1
@@ -104,7 +108,7 @@ app.post('/activate-zones', (req, res) => {
     });
 });
 
-
+//Route to set thermostat temperature
 app.post('/set-temperature', (req, res) => {
     var { temperature } = req.body;
     
@@ -117,6 +121,7 @@ app.post('/set-temperature', (req, res) => {
     });
 });
 
+//Route to adjust brightness
 app.post('/adjust-brightness', (req, res) => {
     const { zone_id, brightness } = req.body;
     
@@ -133,6 +138,7 @@ app.post('/adjust-brightness', (req, res) => {
     call.end();
 });
 
+//Route to get current temperature
 app.get('/current-temperature', (req, res) => {
   temperatureClient.GetCurrentTemperature({}, (error, response) => {
     if (!error) {
@@ -142,5 +148,31 @@ app.get('/current-temperature', (req, res) => {
     }
   });
 });
+
+
+// Creating and handling System Status check stream
+const statusCheckCall = client.checkStatus();
+
+statusCheckCall.on('data', (response) => {
+  console.log('Received from server:', response.statusMessage);
+});
+
+statusCheckCall.on('end', () => {
+  console.log('Server has completed sending messages');
+});
+
+// Send a check command
+statusCheckCall.write({ checkCommand: "initial check" });
+
+// Send another check command after 5 seconds
+setTimeout(() => {
+  statusCheckCall.write({ checkCommand: "follow-up check" });
+}, 5000);
+
+// End the call after 10 seconds
+setTimeout(() => {
+  statusCheckCall.end();
+}, 10000);
+
 
 module.exports = app; // Export the app instance for use in www

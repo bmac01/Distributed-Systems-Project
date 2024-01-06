@@ -2,16 +2,41 @@ syntax = "proto3";
 
 package smarthomecontrol;
 
-// Service definitions
+// Service definitions for Smart Home Control System
+//LightService to handle the light toggle controls
+//Simple RPC
 service LightService {
   rpc ToggleLight (ToggleRequest) returns (ToggleResponse);
   rpc GetStatus (Empty) returns (LightStatus);
 }
 
+//Client Side rpc streaming to control brightness setting
 service BrightnessService {
   rpc AdjustBrightness (stream BrightnessRequest) returns (BrightnessResponse);
 }
 
+//Thermostat Service 
+//Simple rpc to set temperature
+service ThermostatService {
+  rpc SetTemperature (TemperatureRequest) returns (TemperatureResponse);
+  
+}
+//Simple rpc to get current temperature
+service TemperatureService {
+  rpc GetCurrentTemperature (Empty) returns (CurrentTemperatureResponse);
+}
+
+
+//Security System 
+//AlertService - server side rpc to provide alerts to the client
+service AlertService {
+  rpc GetAlerts (Empty) returns (stream Alert);
+}
+
+//SecurityService - client side rpc to activate zones
+service SecurityService {
+  rpc ActivateZones (stream ZoneActivationRequest) returns (ActivationResponse);
+}
 
 // Message definitions
 message Empty {}
@@ -35,18 +60,10 @@ message ToggleResponse {
   string message = 2;
 }
 
-//Security System
-service AlertService {
-  rpc GetAlerts (Empty) returns (stream Alert);
-}
 
 message Alert {
   string message = 1;
   string timestamp = 2;
-}
-
-service SecurityService {
-  rpc ActivateZones (stream ZoneActivationRequest) returns (ActivationResponse);
 }
 
 message ZoneActivationRequest {
@@ -57,14 +74,6 @@ message ZoneActivationRequest {
 message ActivationResponse {
   string message = 1;
 }
-
-//Thermostat Service 
-
-service ThermostatService {
-  rpc SetTemperature (TemperatureRequest) returns (TemperatureResponse);
-  
-}
-
 
 message TemperatureRequest {
   float temperature = 1;
@@ -83,11 +92,19 @@ message BrightnessResponse {
   string message = 1;
 }
 
-
-service TemperatureService {
-  rpc GetCurrentTemperature (Empty) returns (CurrentTemperatureResponse);
-}
-
 message CurrentTemperatureResponse {
   float temperature = 1;
+}
+
+//Bidirectional rpc - to check system status 
+service SystemStatusService {
+  rpc CheckStatus (stream StatusCheckRequest) returns (stream StatusCheckResponse);
+}
+//Message definitions
+message StatusCheckRequest {
+  string checkCommand = 1;
+}
+
+message StatusCheckResponse {
+  string statusMessage = 1;
 }

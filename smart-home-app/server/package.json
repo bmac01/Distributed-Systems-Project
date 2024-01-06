@@ -1,12 +1,12 @@
 {
   "name": "smart-home-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "Smart Home Automation App",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Barry McCabe",
   "license": "ISC",
   "dependencies": {
     "@grpc/grpc-js": "^1.9.13",
