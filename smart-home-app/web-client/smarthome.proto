@@ -62,7 +62,9 @@ message ActivationResponse {
 
 service ThermostatService {
   rpc SetTemperature (TemperatureRequest) returns (TemperatureResponse);
+  
 }
+
 
 message TemperatureRequest {
   float temperature = 1;
@@ -79,4 +81,13 @@ message BrightnessRequest {
 
 message BrightnessResponse {
   string message = 1;
+}
+
+
+service TemperatureService {
+  rpc GetCurrentTemperature (Empty) returns (CurrentTemperatureResponse);
+}
+
+message CurrentTemperatureResponse {
+  float temperature = 1;
 }

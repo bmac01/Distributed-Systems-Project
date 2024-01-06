@@ -27,6 +27,9 @@ var thermostatClient = new smarthomecontrolPackage.ThermostatService('localhost:
 // Initialize gRPC for BrightnessService
 var brightnessclient = new smarthomecontrolPackage.BrightnessService('localhost:4000', grpc.credentials.createInsecure());
 
+// Initialize gRPC for TemperatureService
+var temperatureClient = new smarthomecontrolPackage.TemperatureService('localhost:4000', grpc.credentials.createInsecure());
+
 
 // Route to render the home page
 app.get('/', (req, res) => {
@@ -128,6 +131,16 @@ app.post('/adjust-brightness', (req, res) => {
 
     call.write({ zone_id, brightness });
     call.end();
+});
+
+app.get('/current-temperature', (req, res) => {
+  temperatureClient.GetCurrentTemperature({}, (error, response) => {
+    if (!error) {
+      res.json({ temperature: response.temperature });
+    } else {
+      res.status(500).json({ message: "Error fetching current temperature" });
+    }
+  });
 });
 
 module.exports = app; // Export the app instance for use in www

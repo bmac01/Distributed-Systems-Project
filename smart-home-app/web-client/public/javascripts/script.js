@@ -57,9 +57,9 @@ async function toggleSecuritySystem() {
 
 //temperature 
 async function setTemperature() {
-    const temperature = document.getElementById('temperature').value;
+    var temperature = document.getElementById('temperature').value;
     try {
-        const response = await fetch('/set-temperature', {
+        var response = await fetch('/set-temperature', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -70,14 +70,13 @@ async function setTemperature() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        const data = await response.json();
+        var data = await response.json();
         document.getElementById('temperatureStatus').innerText = data.message;
     } catch (error) {
         console.error('Error setting temperature:', error);
         document.getElementById('temperatureStatus').innerText = `Error: ${error.message}`;
     }
 }
-
 
 // Define adjustBrightness in the global scope
 async function adjustBrightness(zoneId, brightness) {
@@ -115,3 +114,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
     slider1.addEventListener('change', () => adjustBrightness(1, slider1.value));
     slider2.addEventListener('change', () => adjustBrightness(2, slider2.value));
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Set up other event listeners...
+});
+
+async function fetchCurrentTemperature() {
+    try {
+      const response = await fetch('/current-temperature');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      document.getElementById('currentTemp').innerText = data.temperature.toFixed(0);
+    } catch (error) {
+      console.error('Error fetching current temperature:', error);
+    }
+  }
+  
+  // Fetch the temperature immediately when the page loads
+  fetchCurrentTemperature();
+  
+  // Then update the temperature every 5 seconds
+setInterval(fetchCurrentTemperature, 5000);
+  
